@@ -47,7 +47,16 @@ To deploy the application, simply run `/bin/bash deploy.sh`
 >   - Copies the example file to create a new config, if it does not
 > 3. Installs all the dependencies (`npm i`)
 > 4. Starts the application (`npm start`)
+
+### Usage
+
+The API is divided into 3 segments:
+1. Customers - Can create a loan, check all loans applied and pay an installment
+2. Admins - Can approve/deny a loan and check all loans in the system
+3. Internal - For app maintenance and internal operations like onboarding a new customer and admin
  
+Usage for the same is provided in a collection shared privately
+
 <br>
 
 ## Logging
