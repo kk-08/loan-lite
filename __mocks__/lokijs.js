@@ -1,0 +1,1 @@
+module.exports = jest.fn((...args) => { return { arguments: args }});
