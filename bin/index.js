@@ -14,16 +14,11 @@ const Clients = {
 runApp();
 
 async function runApp() {
-    validateConfig();
     const expressApp = buildAndGetExpressApp();
     expressApp.set('HOST', config.app.host);
     expressApp.set('PORT', config.app.port);
     await connectClients();
     startServer(expressApp);
-}
-
-function validateConfig() {
-    //validate required configurations
 }
 
 function buildAndGetExpressApp() {

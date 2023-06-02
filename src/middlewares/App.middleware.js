@@ -80,10 +80,6 @@ class App {
         next(createHttpError(404));
     }
 
-    static notFoundHandler(req, res, next) {
-        next(createHttpError(404));
-    }
-
     static httpErrorHandler(error, req, res, next) {
         if (!error) return next();
     

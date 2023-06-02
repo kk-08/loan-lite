@@ -34,6 +34,8 @@ Node (for application) and npm (for managing packages)
 > NOTE: Tested for Node version 18.14.1 (LTS) and npm version 9.6.4
 > Check versions using `node -v` and `npm -v` respectively
 
+### Deployment
+
 To deploy the application, simply run `/bin/bash deploy.sh`
 
 > Internally, this runs the following steps:
@@ -100,13 +102,14 @@ Each **validationObject**, in turn, has an associated `type` and optional constr
 
 ## Unit Tests
 
+To run unit tests, simply write `npm run test` or `npm run test:coverage` (with coverage report) in the CLI and Enter.
+
 Key features:
 1. Unit Tests are written using [Jest](https://jestjs.io/).
 2. Apart from being segregated into modules following the source files structure, they are intuitively clubbed into test suites internally to identify boundaries easily in the coverage report making it easy to read
 3. Tests can use data providers as well for running same case with multiple different inputs
 4. Data providers and mock utilities have been kept separately from the actual tests under `tests/utils/unit`
 
-Jest has been chosen as the underlying testing framework due to the following advantages:
-1. One stop soltion for running tests, mocking and assertions
-2. Large community support and excellent documentation
-3. Easily extensible coverage reporting
+<br>
+
+## [Design decisions](./DESING_DECISIONS.md)

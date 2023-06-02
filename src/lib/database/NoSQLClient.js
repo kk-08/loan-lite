@@ -24,7 +24,7 @@ class Client {
         Client.#db = new loki(config.db.store,{
             autoload: true,
             autosave: true, 
-            autosaveInterval: 4000,
+            autosaveInterval: config.db.flushInterval,
         });
     }
 
