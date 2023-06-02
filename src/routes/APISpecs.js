@@ -40,8 +40,8 @@ module.exports = {
                 }
             },
             approve: {
-                body: {
-                    requiredKeys: [`loanIds`],
+                params: {
+                    requiredKeys: [`loanId`],
                     validations: { ...loanIdValidation }
                 }
             }

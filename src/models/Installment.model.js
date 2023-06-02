@@ -7,7 +7,8 @@ class Installment {
     static STATUS = {
         PENDING: 'pending',
         PAID: 'paid',
-        ADVANCED: 'advanced'
+        ADVANCED: 'advanced',
+        LATE: 'late'
     }
 
     /**
@@ -101,7 +102,7 @@ class Installment {
     }
 
     static #addDefaults(obj) {
-        if (!obj.actualAmount) obj.actualAmount = null;
+        if (!obj.amount) obj.amount = null;
         if (!obj.paymentDate) obj.paymentDate = null;
         if (!obj.status) obj.status = Installment.STATUS.PENDING;
         if (!obj.createdOn) obj.createdOn = new Date();

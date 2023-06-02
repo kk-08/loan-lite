@@ -143,12 +143,14 @@ describe('Loan controller', () => {
         
         test('Should mark installments advanced if fully paid before and reduce due amount if partially paid', async () => {
             const user = { id: 1, type: Constants.USERS.TYPE.CUSTOMER };
-            const installment1 = { dueAmount: 200, dueDate: new Date(), status: 'pending', paymentDate: null, update: jest.fn() };
-            const installment2 = { dueAmount: 200, dueDate: new Date(), status: 'pending', update: jest.fn() };
-            const installment3 = { dueAmount: 200, dueDate: new Date(), status: 'pending', update: jest.fn() };
+            const installment1 = { dueAmount: 200, dueDate: new Date() + 86400, status: 'pending', paymentDate: null, update: jest.fn() };
+            const installment2 = { dueAmount: 200, dueDate: new Date() + 86400, status: 'pending', update: jest.fn() };
+            const installment3 = { dueAmount: 200, dueDate: new Date() + 86400, status: 'pending', update: jest.fn() };
             const loan = { balance: 600, installments: [installment1, installment2, installment3], update: jest.fn() };
             LoanModel.findOne.mockReturnValueOnce(loan);
-            Helper.round.mockReturnValueOnce(installment1.dueAmount).mockReturnValueOnce(installment2.dueAmount);
+            Helper.round.mockReturnValueOnce(installment1.dueAmount)
+                .mockReturnValueOnce(0).mockReturnValueOnce(installment2.dueAmount)
+                .mockReturnValueOnce(100).mockReturnValueOnce(installment3.dueAmount);
             const loanController = new LoanController(user);
             
             await loanController.pay(1, 500);
@@ -271,10 +273,9 @@ describe('Loan controller', () => {
             LoanModel.findAll.mockReturnValueOnce([{ id: 1, status: 'approved' }]);
             const loanController = new LoanController(user);
 
-            let error;
             try {
                 await loanController.approveOrDeny([1,2,3], true);
-            } catch(err) {
+            } catch(error) {
                 expect(error instanceof RequestError).toBe(true);
                 expect(RequestError).toBeCalledWith(400, 'Invalid loan IDs specified: 1,2,3');
             }

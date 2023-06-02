@@ -112,4 +112,4 @@ Key features:
 
 <br>
 
-## [Design decisions](./DESING_DECISIONS.md)
+## [Decisions/Choices](./DECISIONS.md)

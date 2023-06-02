@@ -1,4 +1,4 @@
-# Design Decisions
+# Decisions/Choices
 
 During the implementation of the project, the following choices were made:
 
@@ -80,3 +80,28 @@ This is because of the following advantages that come with using it:
 1. It is a one stop soltion for running tests, mocking and assertions
 2. It has a large community support and excellent documentation making it easy to get solutions to peculiar use cases as well
 3. It supports multiple formats for coverage reporting and can be extended to support custom formats as well
+
+<br>
+
+## Loan payments
+
+#### Less than installment
+
+In case of payment less than the `installment's due amount`, the request would fail with a message indicating the same
+
+#### More than due
+
+In case of payment more than the `total amount due for the loan`, the request would fail with a message indicating the same
+
+#### Advance
+
+In case of payment more than the scheduled installment, the amount is recursively deducted from the installments left starting with the last one.
+So, if there are 4 pending installments of 20$ each and the customer goes ahead and pays 50$, the following steps are taken:
+1. The first installment would be marked as `paid` with the actual amount 50$.
+2. The last installment would be marked as `advanced` with due amount reduced to 0$.
+3. The second last installment's due amount would be reduced to 10$
+
+
+#### Late payment
+
+In case of payment later than the scheduled installment date, a markup of 1% has been added. In this case, the loan amount stays the same but the installment amount increases and the installment status is marked as `late` payment
