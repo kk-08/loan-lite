@@ -135,8 +135,8 @@ module.exports = {
   
     // The paths to modules that run some code to configure or set up the testing environment before each test
     setupFiles: [
-      './tests/data/unit/dataProviders.js',
-      './tests/data/unit/helpers.js'
+      './tests/utils/unit/dataProviders.js',
+      './tests/utils/unit/helpers.js'
     ],
   
     // A list of paths to modules that run some code to configure or set up the testing framework before each test

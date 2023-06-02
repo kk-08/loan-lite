@@ -99,27 +99,38 @@ class LoanController {
             .filter(x => x.status === InstallmentModel.STATUS.PENDING);
         const currentInstallment = pendingInstallments[0];
         if (currentInstallment.dueAmount > amount) throw new RequestError(400, `Installment amount must not be less than the due amount`);
-        if (currentInstallment.dueDate < new Date()) { 
-            //TODO: Add late payment charges 
-        }
 
+        let balance = this.#updateCurrentInstallmentAndGetBalance(currentInstallment, amount);
+        if (balance > 0) this.#updatePendingInstallmentsInCaseOfBalance(pendingInstallments, balance);
+    }
+
+    #updateCurrentInstallmentAndGetBalance(currentInstallment, amount) {
         currentInstallment.amount = amount;
         currentInstallment.status = InstallmentModel.STATUS.PAID;
         currentInstallment.paymentDate = new Date();
-        amount -= Helper.round(currentInstallment.dueAmount, 3);
-
+        
+        let dueAmount = currentInstallment.dueAmount;
+        if (currentInstallment.dueDate < new Date()) { 
+            dueAmount *= 1.01;
+            currentInstallment.status = InstallmentModel.STATUS.LATE;
+        }
         currentInstallment.update();
+        amount -= Helper.round(dueAmount, 3);
+        return amount;
+    }
+
+    #updatePendingInstallmentsInCaseOfBalance(pendingInstallments, balance) {
         let j = pendingInstallments.length-1;
-        while (amount > 0 && j > 0) {
+        while (balance > 0 && j > 0) {
             const lastPendingInstallment = pendingInstallments[j];
             const dueAmount = lastPendingInstallment.dueAmount;
-            lastPendingInstallment.dueAmount = Math.max(0, dueAmount-amount);
+            lastPendingInstallment.dueAmount = Math.max(0, Helper.round(dueAmount-balance, 3));
             if (lastPendingInstallment.dueAmount === 0) {
                 lastPendingInstallment.status = InstallmentModel.STATUS.ADVANCED;
                 lastPendingInstallment.amount = 0;
             }
             lastPendingInstallment.update();
-            amount -= Helper.round(dueAmount, 3);;
+            balance -= Helper.round(dueAmount, 3);
             j--;
         }
     }
