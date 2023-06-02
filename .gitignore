@@ -1,0 +1,10 @@
+# IDE/Devfiles
+.vscode/
+.DS_Store
+nohup.out
+# Node packages
+node_modules/
+# Log files
+/logs
+# Actual config
+src/configs/config.json
