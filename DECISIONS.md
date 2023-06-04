@@ -83,17 +83,44 @@ This is because of the following advantages that come with using it:
 
 <br>
 
+## Application Development Time Trade-offs
+
+In order to keep the application development time minimal, it was decided to implement the following features in the next iteration of development.
+
+<br>
+
+### HATEOAS
+
+The API developed follows all RESTful constraints except Hypermedia as the Engine of Application State and thus, satisfies upto Level 2 of the  Richardson Maturity Model. Development of this needs sufficient exploration time as out of the box solutions have limited features and a small usage community, and a good implementation, which would result in zero or less effort on each route definition, would require significant thought and adaptation efforts. 
+Packages considered so far:
+1. [express-hateoas-links](https://www.npmjs.com/package/express-hateoas-links)
+2. [express-hateoas-yml](https://www.npmjs.com/package/express-hateoas-yml)
+
+<br>
+
+### Feature Tests
+
+While the application code is thoroughly Unit Tested, feature/integration tests are not included as of now. This is due to the exploratory effort it required for having a sound and extensible implementation which was difficult to fit in the development time. The idea is to use [supertest](https://www.npmjs.com/package/supertest) along with assertions in [Jest](https://jestjs.io/) and test the API endpoints.
+
+<br>
+
 ## Loan payments
 
-#### Less than installment
+<br>
+
+### Less than installment
 
 In case of payment less than the `installment's due amount`, the request would fail with a message indicating the same
 
-#### More than due
+<br>
+
+### More than due
 
 In case of payment more than the `total amount due for the loan`, the request would fail with a message indicating the same
 
-#### Advance
+<br>
+
+### Advance
 
 In case of payment more than the scheduled installment, the amount is recursively deducted from the installments left starting with the last one.
 So, if there are 4 pending installments of 20$ each and the customer goes ahead and pays 50$, the following steps are taken:
@@ -101,7 +128,8 @@ So, if there are 4 pending installments of 20$ each and the customer goes ahead 
 2. The last installment would be marked as `advanced` with due amount reduced to 0$.
 3. The second last installment's due amount would be reduced to 10$
 
+<br>
 
-#### Late payment
+### Late payment
 
 In case of payment later than the scheduled installment date, a markup of 1% has been added. In this case, the loan amount stays the same but the installment amount increases and the installment status is marked as `late` payment
